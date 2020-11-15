@@ -1,5 +1,5 @@
-import { Robot } from './robot'
 import { Scene } from './scene'
+import { Position } from './types'
 
 export class TableTop extends Scene {
   width: number
@@ -13,10 +13,15 @@ export class TableTop extends Scene {
   }
 
   /**
-   * check if a robot movement is valid
-   * @param robot
+   * check if a target movement is valid
+   * @param position
    */
-  canRobotMove(robot: Robot): boolean {
-    return false
+  isValidMovement(position: Position): boolean {
+    return (
+      position.x >= 0 &&
+      position.x < this.width &&
+      position.y >= 0 &&
+      position.y < this.height
+    )
   }
 }

@@ -2,7 +2,7 @@ import { TableTop } from '../tableTop'
 
 describe('TableTop Class', () => {
   describe('constructor', () => {
-    it('should initialize Robot with proper arguments', () => {
+    it('should initialize TableTop with proper arguments', () => {
       const tableTop = new TableTop(5, 6)
       expect(tableTop.width).toBe(5)
       expect(tableTop.height).toBe(6)
@@ -18,6 +18,7 @@ describe('TableTop Class', () => {
       expect(tableTop.isValidMovement({ x: 4, y: 4 })).toBeTruthy()
       expect(tableTop.isValidMovement({ x: 2, y: 2 })).toBeTruthy()
     })
+
     it('should return false when the position is invalid', () => {
       const tableTop = new TableTop(5, 5)
       expect(tableTop.isValidMovement({ x: -1, y: 0 })).toBeFalsy()

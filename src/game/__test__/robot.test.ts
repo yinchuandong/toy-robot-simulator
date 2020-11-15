@@ -99,4 +99,11 @@ describe('Robot class', () => {
       expect(robot.facing).toBe('North')
     })
   })
+
+  describe('report', () => {
+    it('should report x,y,facing', () => {
+      let robot = new Robot({ x: 2, y: 3 }, 'North')
+      expect(robot.report()).toEqual('2,3,North')
+    })
+  })
 })

@@ -69,6 +69,6 @@ export class Robot extends Scene {
   }
 
   report() {
-    return `${this.position.x},${this.position.y}, ${this.facing}`
+    return `${this.position.x},${this.position.y},${this.facing}`
   }
 }

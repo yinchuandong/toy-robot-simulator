@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react'
-import { CmdPlaceType, CmdReportType } from '../../game'
 import { useGame } from './gameHook'
 
 export const Home: React.FC = () => {
@@ -18,10 +17,6 @@ export const Home: React.FC = () => {
     setCmdText(value)
   }
 
-  const reportCmdCallback = (info: string) => {
-    setLogs((logs) => [...logs, `Output: ${info}`])
-  }
-
   const renderLogs = useMemo(() => {
     return logs.map((log, i) => {
       return <p key={i}>{log}</p>
@@ -30,22 +25,16 @@ export const Home: React.FC = () => {
 
   const handleExecute = (e: React.FormEvent | React.MouseEvent) => {
     e.preventDefault()
+    if (!game) {
+      return
+    }
+
     try {
-      const [cmd, paramText] = cmdText.split(' ')
       setLogs((logs) => [...logs, cmdText])
       setCmdText('')
-      if (cmd === 'PLACE' && paramText) {
-        const argArr = paramText.split(',')
-        const facing = argArr[2].trim()
-        game?.step(cmd, {
-          x: parseInt(argArr[0]),
-          y: parseInt(argArr[1]),
-          facing: facing,
-        } as CmdPlaceType)
-      } else if (cmd === 'REPORT') {
-        game?.step(cmd, { callback: reportCmdCallback } as CmdReportType)
-      } else {
-        game?.step(cmd)
+      const { cmd, result } = game.step(cmdText)
+      if (cmd === 'REPORT') {
+        setLogs((logs) => [...logs, `Output: ${result}`])
       }
     } catch (error) {
       alert(error)

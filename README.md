@@ -14,6 +14,8 @@ This is a demo code for toy robot simulator based on react and typescript with p
 - [x] Over 95% test coverage
 - [x] Clear code structure
 - [x] Clear git commit history (Semi-linear)
+- [ ] Github Action Pipeline
+- [ ] Husky precommit hooks
 
 ### Screenshots
 UI: You can press `Enter` to execute cmd

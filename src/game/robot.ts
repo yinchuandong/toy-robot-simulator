@@ -3,20 +3,21 @@ import { Direction, Position } from './types'
 
 // A lookup table for rotating
 export const rotateDirectionLookupTable: Direction[] = [
-  'North',
-  'East',
-  'South',
-  'West',
-  'North',
+  'NORTH',
+  'EAST',
+  'SOUTH',
+  'WEST',
+  'NORTH',
 ]
 
 export class Robot extends Scene {
-  position: Position = { x: 0, y: 0 }
-  facing: Direction = 'South'
+  position: Position
+  facing: Direction
 
   constructor(position: Position, facing: Direction) {
     super()
-    this.place(position, facing)
+    this.position = position
+    this.facing = facing
   }
 
   place(position: Position, facing: Direction) {
@@ -36,16 +37,16 @@ export class Robot extends Scene {
       ...this.position,
     }
     switch (this.facing) {
-      case 'North':
-        nextPosition.y -= 1
-        break
-      case 'South':
+      case 'NORTH':
         nextPosition.y += 1
         break
-      case 'West':
+      case 'SOUTH':
+        nextPosition.y -= 1
+        break
+      case 'WEST':
         nextPosition.x -= 1
         break
-      case 'East':
+      case 'EAST':
         nextPosition.x += 1
         break
     }

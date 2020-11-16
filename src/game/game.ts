@@ -33,6 +33,9 @@ export class Game {
     switch (cmd) {
       case 'PLACE':
         const { x, y, facing } = params as CmdPlaceType
+        if(['NORTH', 'SOUTH', 'EAST', 'WEST'].indexOf(facing) < 0) {
+          throw Error(`Invalid args facing: ${facing}`)
+        }
         if (this.tableTop.isValidMovement({ x, y })) {
           this.robot.place({ x, y }, facing)
         }

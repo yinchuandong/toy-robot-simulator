@@ -30,9 +30,9 @@ export const Home: React.FC = () => {
     }
 
     try {
+      const { cmd, result } = game.step(cmdText)
       setLogs((logs) => [...logs, cmdText])
       setCmdText('')
-      const { cmd, result } = game.step(cmdText)
       if (cmd === 'REPORT') {
         setLogs((logs) => [...logs, `Output: ${result}`])
       }

@@ -1,2 +1,2 @@
 export type Position = { x: number; y: number }
-export type Direction = 'North' | 'South' | 'East' | 'West'
+export type Direction = 'NORTH' | 'SOUTH' | 'EAST' | 'WEST'

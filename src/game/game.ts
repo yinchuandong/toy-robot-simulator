@@ -2,18 +2,6 @@ import { Robot } from './robot'
 import { TableTop } from './tableTop'
 import { Direction } from './types'
 
-export type CmdPlaceType = { x: number; y: number; facing: Direction }
-export type CmdMoveType = undefined
-export type CmdLeftType = undefined
-export type CmdRightType = undefined
-export type CmdReportType = { callback: (info: string) => void }
-export type CmdType =
-  | CmdPlaceType
-  | CmdMoveType
-  | CmdLeftType
-  | CmdRightType
-  | CmdReportType
-
 export class Game {
   robot: Robot
   tableTop: TableTop
@@ -29,38 +17,52 @@ export class Game {
     )
   }
 
-  step(cmd: string, params?: CmdType) {
+  step(cmdText: string) {
+    const [cmd, paramText] = cmdText.split(' ')
+
+    let result = undefined
     switch (cmd) {
       case 'PLACE':
-        const { x, y, facing } = params as CmdPlaceType
+        const paramsArr = paramText.split(',')
+        const x = parseInt(paramsArr[0])
+        const y = parseInt(paramsArr[1])
+        const argArr = paramText.split(',')
+        const facing = argArr[2].trim() as Direction
+        if(['NORTH', 'SOUTH', 'EAST', 'WEST'].indexOf(facing) < 0) {
+          throw Error(`Invalid params: ${paramText}`)
+        }
         if (this.tableTop.isValidMovement({ x, y })) {
-          this.robot.place({ x, y }, facing)
+          result =  this.robot.place({ x, y }, facing)
         }
         break
 
       case 'MOVE':
         const targetPosition = this.robot.getNextTargetPosition()
         if (this.tableTop.isValidMovement(targetPosition)) {
-          this.robot.move(targetPosition)
+          result = this.robot.move(targetPosition)
         }
         break
 
       case 'LEFT':
-        this.robot.rotateLeft()
+        result = this.robot.rotateLeft()
         break
 
       case 'RIGHT':
-        this.robot.rotateRight()
+        result = this.robot.rotateRight()
         break
-
       case 'REPORT':
-        const { callback } = params as CmdReportType
-        const info = this.robot.report()
-        callback(info)
+        result = this.robot.report()
         break
 
       default:
         throw Error(`Invalid command: ${cmd}`)
     }
+
+    return {
+      cmd,
+      paramText,
+      result
+    }
   }
+
 }

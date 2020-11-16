@@ -14,33 +14,33 @@ describe('Game Class', () => {
     it('should initialize Game with proper arguments', () => {
       const game = new Game(
         { width: 5, height: 5 },
-        { x: 0, y: 0, facing: 'South' }
+        { x: 0, y: 0, facing: 'NORTH' }
       )
 
       expect(game.tableTop).not.toBeNull()
       expect(game.robot).not.toBeNull()
 
       expect(TableTop).toBeCalledWith(5, 5)
-      expect(Robot).toBeCalledWith({ x: 0, y: 0 }, 'South')
+      expect(Robot).toBeCalledWith({ x: 0, y: 0 }, 'NORTH')
     })
   })
 
   describe('step', () => {
-    it('should execute PLACE cmd with x, y, facing', () => {
+    it('should execute PLACE cmd with valid params', () => {
       const game = new Game(
         { width: 5, height: 5 },
-        { x: 0, y: 0, facing: 'South' }
+        { x: 0, y: 0, facing: 'NORTH' }
       )
 
       // isValidMovement is true
       game.tableTop.isValidMovement = jest.fn().mockImplementation(() => true)
-      game.step('PLACE', { x: 2, y: 2, facing: 'North' })
+      game.step('PLACE 2,2,NORTH')
       expect(game.tableTop.isValidMovement).toBeCalledWith({ x: 2, y: 2 })
-      expect(game.robot.place).toBeCalledWith({ x: 2, y: 2 }, 'North')
+      expect(game.robot.place).toBeCalledWith({ x: 2, y: 2 }, 'NORTH')
 
       // isValidMovement is false
       game.tableTop.isValidMovement = jest.fn().mockImplementation(() => false)
-      game.step('PLACE', { x: -1, y: 2, facing: 'North' })
+      game.step('PLACE -1,2,NORTH')
       expect(game.tableTop.isValidMovement).toBeCalledWith({ x: -1, y: 2 })
       expect(game.robot.place).toBeCalledTimes(1)
     })
@@ -54,7 +54,7 @@ describe('Game Class', () => {
 
       const game = new Game(
         { width: 5, height: 5 },
-        { x: 0, y: 0, facing: 'South' }
+        { x: 0, y: 0, facing: 'NORTH' }
       )
       // isValidMovement is true
       game.tableTop.isValidMovement = jest.fn().mockImplementation(() => true)
@@ -72,7 +72,7 @@ describe('Game Class', () => {
     it('should execute LEFT cmd', () => {
       const game = new Game(
         { width: 5, height: 5 },
-        { x: 0, y: 0, facing: 'South' }
+        { x: 0, y: 0, facing: 'NORTH' }
       )
 
       game.step('LEFT')
@@ -82,7 +82,7 @@ describe('Game Class', () => {
     it('should execute RIGHT cmd', () => {
       const game = new Game(
         { width: 5, height: 5 },
-        { x: 0, y: 0, facing: 'South' }
+        { x: 0, y: 0, facing: 'NORTH' }
       )
 
       game.step('RIGHT')
@@ -90,27 +90,37 @@ describe('Game Class', () => {
     })
 
     it('should execute REPORT cmd with callback', () => {
-      Robot.prototype.report = jest.fn().mockImplementation(() => '0,0,South')
+      Robot.prototype.report = jest.fn().mockImplementation(() => '0,0,NORTH')
       const game = new Game(
         { width: 5, height: 5 },
-        { x: 0, y: 0, facing: 'South' }
+        { x: 0, y: 0, facing: 'NORTH' }
       )
 
-      const callback = jest.fn()
-
-      game.step('REPORT', { callback })
+      const { result } = game.step('REPORT')
       expect(game.robot.report).toBeCalled()
-      expect(callback).toBeCalledWith('0,0,South')
+      expect(result).toBe('0,0,NORTH')
     })
 
     it('should raise error with error message when a invalid cmd is given', () => {
       const game = new Game(
         { width: 5, height: 5 },
-        { x: 0, y: 0, facing: 'South' }
+        { x: 0, y: 0, facing: 'NORTH' }
       )
       expect(() => {
-        game.step('invalid cmd')
-      }).toThrowError(/Invalid command: invalid cmd/)
+        game.step('INVALID_CMD xxx')
+      }).toThrowError(/Invalid command: INVALID_CMD/)
     })
+
+    it('should raise error with error message when a invalid PLACE params are given', () => {
+      const game = new Game(
+        { width: 5, height: 5 },
+        { x: 0, y: 0, facing: 'NORTH' }
+      )
+
+      expect(() => {
+        game.step('PLACE 0,0,INVALID')
+      }).toThrowError(/Invalid params: 0,0,INVALID/)
+    })
+
   })
 })

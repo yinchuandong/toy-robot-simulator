@@ -19,7 +19,7 @@ This is a demo code for toy robot simulator based on react and typescript with p
 
 ### Screenshots
 UI: You can press `Enter` to execute cmd
-![UI](./docs/UI.jpg)
+![UI2](./docs/UI2.jpg)
 
 Tests: 
 ![Tests](./docs/test.jpg)

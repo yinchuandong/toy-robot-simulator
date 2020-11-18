@@ -1,3 +1,4 @@
+import { Hole } from './hole'
 import { Robot } from './robot'
 import { TableTop } from './tableTop'
 import { Direction } from './types'
@@ -11,6 +12,10 @@ export class Game {
     robotParams: { x: number; y: number; facing: Direction }
   ) {
     this.tableTop = new TableTop(tableTopParams.width, tableTopParams.height)
+    this.tableTop.addHole(new Hole({
+      x: 2, y: 2
+    }))
+
     this.robot = new Robot(
       { x: robotParams.x, y: robotParams.y },
       robotParams.facing

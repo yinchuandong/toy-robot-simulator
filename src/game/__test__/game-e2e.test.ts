@@ -69,4 +69,21 @@ describe('Game end to end test', () => {
       expect(ret.result).toBe('4,0,EAST')
     })
   })
+
+  describe('test preventing entering a hole', () => {
+    it('should prevent failing when moving to a hole', () => {
+      const game = new Game(
+        { width: 5, height: 5 },
+        { x: 2, y: 1, facing: 'NORTH' }
+      )
+
+      let ret
+      // MOVE towards SOUTH at 0,0
+      game.step('PLACE 2,1,NORTH')
+      game.step('MOVE')
+      ret = game.step('REPORT')
+      expect(ret.result).toBe('2,1,NORTH')
+
+    })
+  })
 })

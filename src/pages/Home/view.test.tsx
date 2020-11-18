@@ -54,7 +54,7 @@ describe('view', () => {
     fireEvent.change(cmdInput, { target: { value: 'WRONG 0,0,SOUTH' } })
     expect(cmdInput.value).toBe('WRONG 0,0,SOUTH')
     fireEvent.click(sendButton)
-    expect(cmdInput.value).toBe('')
     expect(window.alert).toBeCalled()
+    expect(cmdInput.value).toBe('WRONG 0,0,SOUTH')
   })
 })
